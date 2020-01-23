@@ -1,0 +1,50 @@
+load("//Config:configs.bzl", "app_binary_configs", "library_configs", "pretty", "info_plist_substitutions", "bundle_identifier", "DEVELOPMENT_LANGUAGE")
+
+apple_asset_catalog(
+    name = "BuckDemoAppAssets",
+    visibility = ["//BuckDemoApp:"],
+    app_icon = "Icon",
+    dirs = ["Assets.xcassets"],
+)
+
+xcode_workspace_config(
+    name = "workspace",
+    workspace_name = "BuckDemoApp",
+    src_target = ":BuckDemoApp",
+    action_config_names = {"profile": "Profile"},
+)
+
+apple_binary(
+    name = "BuckDemoAppBinary",
+    visibility = [
+        "//BuckDemoApp:",
+        "//BuckDemoApp/...",
+    ],
+    preprocessor_flags = ['-fobjc-arc', '-Wno-objc-designated-initializers'],
+    swift_version = "5",
+      srcs = glob([
+          '*.swift',
+    ]),
+    frameworks = [
+    '$SDKROOT/System/Library/Frameworks/UIKit.framework',
+    '$SDKROOT/System/Library/Frameworks/Foundation.framework',
+  ],
+)
+
+apple_bundle(
+    name = "BuckDemoApp",
+    visibility = [
+        "//BuckDemoApp:",
+    ],
+    extension = "app",
+    binary = ":BuckDemoAppBinary",
+    product_name = "BuckDemoApp",
+    info_plist = "Info.plist",
+    info_plist_substitutions = info_plist_substitutions("BuckDemoApp"),
+)
+
+
+apple_package(
+    name = "BuckDemoAppPackage",
+    bundle = ":BuckDemoApp",
+)
