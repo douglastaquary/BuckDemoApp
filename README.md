@@ -1,5 +1,15 @@
 # Config Buck on Mac
 
+<p align="center">
+    <img src="https://img.shields.io/badge/Swift-5.1-orange.svg" />
+     <img src="https://img.shields.io/badge/platforms-mac+linux-brightgreen.svg?style=flat" alt="Mac + Linux" />
+</p>
+
+
+## What is Buck ?
+
+https://buck.build/setup/getting_started.html
+
 ## Install Apache Ant
 
 #### Download
