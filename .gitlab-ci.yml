@@ -1,11 +1,12 @@
 stages:
+  - build
   - test
   - review
 
 variables:
   DANGER_GITLAB_API_TOKEN: "yNhUGSrfa6f-D_w2kTTp"
-  DANGER_GITLAB_HOST: "gitlab.douglastaquary.com"
-  DANGER_GITLAB_API_BASE_URL: "https://gitlab.douglastaquary.com/api/v4"
+  DANGER_GITLAB_HOST: "git.douglastaquary.com"
+  DANGER_GITLAB_API_BASE_URL: "https://gitlab.com/api/v4"
 
 before_script:
   - export PULL_REQUEST_ID=$(git ls-remote -q origin merge-requests\*\head | grep $CI_COMMIT_SHA | sed 's/.*refs\/merge-requests\/\([0-9]*\)\/head/\1/g')
@@ -16,18 +17,29 @@ before_script:
 test-sim:
   stage: test
   script:
-    - pod install
-    - buck build //BuckDemoApp:BuckDemoApp
-    - buck install --run demo_app_ios
-    #- xcodebuild clean -workspace MyApp.xcworkspace -scheme MyApp
-    #- xcodebuild test -workspace MyApp.xcworkspace -scheme MyApp -destination 'platform=iOS Simulator,name=iPhone 7,OS=10.3.1' 
+    #- pod install
+    - xcodebuild clean -workspace BuckDemoApp.xcworkspace -scheme BuckDemoApp
+    - xcodebuild test -workspace BuckDemoApp.xcworkspace -scheme BuckDemoApp -destination 'platform=iOS Simulator,name=iPhone X,OS=11' 
   tags:
-    - ios
+    - ios_11
+    - xcode_10-2
+    - osx_10-15
 
+build_project:
+  stage: build
+  script:
+    - xcodebuild clean -project BuckDemoApp.xcodeproj -scheme BuckDemoApp | xcpretty
+    - xcodebuild test -project BuckDemoApp.xcodeproj -scheme BuckDemoApp -destination 'platform=iOS Simulator,name=iPhone X,OS=11' | xcpretty -s
+  tags:
+    - ios_11
+    - xcode_10-2
+    - osx_10-15
 danger:
   stage: review
   script:
-    #- bundle install
+   # - bundle install
     - bundle exec danger --verbose
   tags:
-    - ios
+    - ios_11
+    - xcode_10-2
+    - osx_10-15
