@@ -50,7 +50,7 @@ git clone https://github.com/facebook/buck.git
 cd buck
 ant
 ```
-#### Verify Ant
+#### Verify BUck
 ```
 ./bin/buck build --show-output buck
 buck-out/gen/programs/buck.pex --help
