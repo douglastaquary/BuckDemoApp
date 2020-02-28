@@ -3,7 +3,7 @@ load("//Config:configs.bzl", "app_binary_configs", "library_configs", "pretty", 
 apple_asset_catalog(
     name = "BuckDemoAppAssets",
     visibility = ["//BuckDemoApp:"],
-    app_icon = "Icon",
+    app_icon = "AppIcon",
     dirs = ["Assets.xcassets"],
 )
 
@@ -14,21 +14,61 @@ xcode_workspace_config(
     action_config_names = {"profile": "Profile"},
 )
 
+# apple_library(
+#     name = "BuckDemoLibrary",
+#     visibility = [
+#         "//BuckDemoApp:",
+#         "//BuckDemoApp/...",
+#     ],
+#     configs = library_configs(),
+#     swift_version = "5",
+#     srcs = [
+#         "ViewController.swift",
+#         "AppDelegate.swift",
+#     ],
+#     #tests = app_tests,
+#     deps = [
+
+#         ":BuckDemoAppAssets",
+
+#         # Resources
+#         "//BuckDemoApp:StoryboardResources",
+#     ],
+
+# )
+
 apple_binary(
     name = "BuckDemoAppBinary",
     visibility = [
         "//BuckDemoApp:",
         "//BuckDemoApp/...",
     ],
+    configs = app_binary_configs("BuckDemoApp"),
     preprocessor_flags = ['-fobjc-arc', '-Wno-objc-designated-initializers'],
     swift_version = "5",
       srcs = glob([
-          '*.swift',
+        "ViewController.swift",
+        "AppDelegate.swift",
     ]),
     frameworks = [
     '$SDKROOT/System/Library/Frameworks/UIKit.framework',
     '$SDKROOT/System/Library/Frameworks/Foundation.framework',
   ],
+    deps = [
+        
+        ":BuckDemoAppAssets",
+
+        # Resources
+        "//BuckDemoApp:StoryboardResources",
+    ],
+)
+
+apple_resource(
+    name = "StoryboardResources",
+    visibility = ["//BuckDemoApp:"],
+    variants = glob([
+        "*.lproj/*.storyboard",
+    ]),
 )
 
 apple_bundle(
