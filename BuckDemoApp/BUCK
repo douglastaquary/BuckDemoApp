@@ -7,35 +7,20 @@ apple_asset_catalog(
     dirs = ["Assets.xcassets"],
 )
 
+apple_resource(
+    name = "StoryboardResources",
+    visibility = ["//BuckDemoApp:"],
+    variants = glob([
+        "*.lproj/*.storyboard",
+    ]),
+)
+
 xcode_workspace_config(
     name = "workspace",
     workspace_name = "BuckDemoApp",
     src_target = ":BuckDemoApp",
     action_config_names = {"profile": "Profile"},
 )
-
-# apple_library(
-#     name = "BuckDemoLibrary",
-#     visibility = [
-#         "//BuckDemoApp:",
-#         "//BuckDemoApp/...",
-#     ],
-#     configs = library_configs(),
-#     swift_version = "5",
-#     srcs = [
-#         "ViewController.swift",
-#         "AppDelegate.swift",
-#     ],
-#     #tests = app_tests,
-#     deps = [
-
-#         ":BuckDemoAppAssets",
-
-#         # Resources
-#         "//BuckDemoApp:StoryboardResources",
-#     ],
-
-# )
 
 apple_binary(
     name = "BuckDemoAppBinary",
@@ -61,14 +46,6 @@ apple_binary(
         # Resources
         "//BuckDemoApp:StoryboardResources",
     ],
-)
-
-apple_resource(
-    name = "StoryboardResources",
-    visibility = ["//BuckDemoApp:"],
-    variants = glob([
-        "*.lproj/*.storyboard",
-    ]),
 )
 
 apple_bundle(
