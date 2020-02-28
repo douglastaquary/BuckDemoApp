@@ -2,7 +2,7 @@
     "buck.projectConfig": {
         "projectPath": "/Users/t719628/Documents/Douglas/Gitlab/BuckDemoApp",
         "flavor": [],
-        "target": "",
+        "target": "//BuckDemoApp:BuckDemoApp",
         "platform": "linux-x86_64"
     }
 }
